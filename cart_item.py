@@ -11,7 +11,7 @@ class CartItem:
             raise ValueError("Invalid quantity, not available in stock")
 
     def get_total_price(self):
-        return self.product.price * self.quantity
+        return self.product.price, * self.quantity
     
     def increase_quantity(self, quantity):
         if quantity>0 and (self.quantity+quantity)<=self.product.stock:
@@ -31,11 +31,11 @@ class CartItem:
             raise ValueError("Invalid quantity")
         
     def get_details(self):
-        return f"Cart Summary:\nProduct Name: {self.product.name}\nProduct Quantity: {self.quantity}\nTotal Price: {self.get_total_price()} Rs"
-
-p1 = Product("Hp Laptop", 32000, 15)
-i1 = CartItem(p1,2)
-
-i1.increase_quantity(10)
-i1.decrease_quantity(8)
-print(i1.get_details())
+        details = [
+            "",
+            f"Name: {self.product.name}",
+            f"Price: {self.product.price:,} Rs",
+            f"Quantity: {self.quantity}",
+            f"Net Price: {self.get_total_price():,} Rs"
+        ]
+        return "\n".join(details)

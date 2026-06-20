@@ -1,47 +1,73 @@
 class Product:
-    counter = 1000
+    productid = 1000
     products = 0
     def __init__(self, name, price, stock):
-        if price>0 and stock>=0:
-            self.name = name
-            self.price = price
-            self.stock = stock
-            self.product_id = Product.counter
-            Product.counter+=1
-            Product.products+=1
-
-        else:
-            raise ValueError("Invalid price or stock")
+        self.price = price
+        self.stock = stock
+        self.name = name
+        self.__product_id = Product.productid
+        Product.productid+=1
+        Product.products+=1
 
     @classmethod
     def get_total_products(cls):
         return cls.products
-
-    def is_available(self, quantity):
-        if quantity>0:
-            return quantity<=self.stock
-        else:
-            raise ValueError("Invalid quantity")
     
+    @property
+    def product_id(self):
+        return self.__product_id
+    
+    @property
+    def price(self):
+        return self.__price
+    
+    @price.setter
+    def price(self, new_price):
+        if new_price>0:
+            self.__price = new_price
+        else:
+            raise ValueError("Price should be greater than 0")
+        
+    @property
+    def stock(self):
+        return self.__stock
+    
+    @stock.setter
+    def stock(self, stock):
+        if stock >=0:
+            self.__stock = stock
+        else:
+            raise ValueError("Stock should be greater than or equal to 0")
+        
+    @property
+    def name(self):
+        return self.__name
+    
+    @name.setter
+    def name(self, new_name):
+        if new_name.strip():
+            self.__name = new_name
+        else:
+            raise ValueError("Product name can't be empty")
+    
+    def is_available(self, quantity):
+        if quantity<=0:
+            raise ValueError("Quantity should be positive")
+        return quantity<=self.stock
+
     def reduce_stock(self, quantity):
-        if self.is_available(quantity)==True:
+        if self.is_available(quantity):
             self.stock -= quantity
         else:
-            raise ValueError("Invalid quantity")
+            raise ValueError("Invalid quantity, not available in stock")
             
     def restock(self, quantity):
         if quantity>0:
             self.stock += quantity
         else:
-            raise ValueError("Invalid quantity")
-        
-    def update_price(self, new_price):
-        if new_price>0:
-            self.price = new_price
-        else:
-            raise ValueError("Invalid price")
+            raise ValueError("Stock should be greater than 0")
 
-    def get_details(self):
+    def product_info(self):
         details = [
             "",
             "Product Specifications:",

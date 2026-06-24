@@ -2,8 +2,8 @@ from cart_item import CartItem
 
 class Cart:
     def __init__(self):
-        self.cartitems = [] # --> will hold cartitems (obj of cartitem class)
-
+        self.cartitems: list[CartItem] = []
+        
     def add_item(self, product, quantity):
         for i in self.cartitems:
             if i.product.product_id == product.product_id:
@@ -28,6 +28,7 @@ class Cart:
                 if i.quantity == 0:
                     self.remove_item(product_id)
                     break
+                break
         else:
             raise ValueError("A cartitem doesnt exist with that ID")          
 
@@ -45,12 +46,18 @@ class Cart:
         self.cartitems.clear()
     
     def cart_info(self):
-        if len(self.cartitems)>0:
-            print("\nCart Summary:")
-            for index, item in enumerate(self.cartitems):
-                print(f"\nItem # {index+1}:", end=" ")
-                print(item.cartitem_info())
+        if not self.cartitems:
+            return f"\nDear Customer, your shopping cart is currently empty."
+        result = []
+        result.append("\n" + "="*41)    
+        result.append("              CART OVERVIEW")
+        result.append("="*41)
+        print
+        for index, item in enumerate(self.cartitems, start=1):
+            result.append(f"\n[{index}] Product Details")
+            result.append(item.cartitem_info())
+        result.append("\n" + "-"*41)
+        result.append(f"Total Payable Amount: {self.get_total():,} Rs")
+        result.append("-"*41)
 
-            print(f"\nTotal Payable Amount: {self.get_total():,} Rs")
-        else:
-            print("There are no items in your cart.")
+        return "\n".join(result)

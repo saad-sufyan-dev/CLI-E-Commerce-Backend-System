@@ -12,7 +12,7 @@ The project is designed for learning and portfolio purposes, focusing on core so
 ## 🎯 Objectives
 
 * Practice Object-Oriented Programming (OOP)
-* Understand class relationships (composition)
+* Understand class relationships (composition, aggregation)
 * Implement real-world backend logic
 * Learn file-based data persistence
 * Build a structured and scalable Python project
@@ -61,10 +61,12 @@ cli-ecommerce-backend/
 ├── cart.py
 ├── cart_item.py
 ├── customer.py
+├── order.py
 │
 ├── data/
 │   ├── products.txt
 │   ├── customers.txt
+│   ├── orders.txt
 │
 ├── utils/
 │   ├── file_handler.py
@@ -80,6 +82,7 @@ cli-ecommerce-backend/
 * **CartItem** → Represents a product with quantity
 * **Cart** → Manages cart items and calculations
 * **Customer** → Holds user data and cart
+* **Order** → Represents a completed purchase
 * **Store** → Controls products, customers, and checkout process
 
 ---
@@ -88,7 +91,8 @@ cli-ecommerce-backend/
 
 * Classes and Objects
 * Inheritance (optional extension)
-* Composition (Cart → CartItems → Product)
+* Composition (Customer → Cart → CartItems)
+* Aggregation (CartItem → Product)
 * File Handling (read/write .txt data)
 * Modular programming
 * Basic system design thinking

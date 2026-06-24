@@ -10,7 +10,7 @@ class Customer:
     
     def __init__(self, name, email):
         self.email = email
-        self.name = name
+        self.name: str = name
         self.__customer_id = Customer.customerid
         self.cart = Cart()
         Customer.customers+=1
@@ -22,18 +22,30 @@ class Customer:
     
     @email.setter
     def email(self, new_email):
-        if self.verify_email(new_email):
-            self.__email = new_email
-        else:
+        if not self.verify_email(new_email):
             raise ValueError("Invalid email")
-    
+        self.__email = new_email
+        
     @property
     def customer_id(self):
         return self.__customer_id
     
+    @property
+    def name(self):
+        return self.__name
+    
+    @name.setter
+    def name(self, new_name: str):
+        if not new_name.strip() or len(new_name)>23:
+            raise ValueError("Customer name cant be empty and must be under 23 word limit")
+        self.__name = new_name
+    
     def add_to_cart(self, product, quantity):
         self.cart.add_item(product, quantity)   
 
+    def decrease_from_cart(self, product_id, quantity):
+        self.cart.decrease_item(product_id, quantity)
+        
     def remove_from_cart(self, product_id):
         self.cart.remove_item(product_id)
 
@@ -41,7 +53,7 @@ class Customer:
         return self.cart
     
     def view_cart(self):
-        self.cart.cart_info()
+        return self.cart.cart_info()
 
     def cart_total(self):
         return f"Total Payable Amount: {self.cart.get_total():,} Rs"
@@ -50,12 +62,15 @@ class Customer:
         self.cart.clear_cart()
         
     def customer_info(self):
-        details = [
-            "",
-            f"Customer Name: {self.name}",
-            f"Customer Email: {self.email}",
-            f"Customer ID: {self.customer_id}",
-            f"Total items in cart: {self.cart.get_total_cartitems()}"
-        ]
-        return "\n".join(details)
-    
+        return f"""
+    ========================================
+                CUSTOMER DETAILS            
+    ========================================
+
+    Name: {self.name} 
+    Email: {self.email}
+    ID: {self.customer_id}
+    Total items in cart: {self.cart.get_total_cartitems()}
+
+    ----------------------------------------
+        """

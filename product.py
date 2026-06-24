@@ -44,11 +44,10 @@ class Product:
         return self.__name
     
     @name.setter
-    def name(self, new_name):
-        if new_name.strip():
-            self.__name = new_name
-        else:
-            raise ValueError("Product name can't be empty")
+    def name(self, new_name: str):
+        if not new_name.strip() or len(new_name)>23:
+            raise ValueError("Product name cant be empty and must be under 23 word limit")
+        self.__name = new_name 
     
     def is_available(self, quantity):
         if quantity<=0:
@@ -68,12 +67,14 @@ class Product:
             raise ValueError("Stock should be greater than 0")
 
     def product_info(self):
-        details = [
-            "",
-            "Product Specifications:",
-            f"Product Name:  {self.name}",
-            f"Product Price: {self.price:,} Rs",
-            f"Product Stock: {self.stock} pieces left",
-            f"Product ID:    {self.product_id}"
-        ]
-        return "\n".join(details)
+        return f"""
+    ========================================
+                PRODUCT DETAILS
+    ========================================
+
+    Name: {self.name} (ID: {self.product_id})
+    Price: {self.price:,} Rs
+    Stock: {self.stock} units available
+
+    ----------------------------------------
+        """

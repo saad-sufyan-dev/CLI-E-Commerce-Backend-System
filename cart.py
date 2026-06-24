@@ -52,7 +52,6 @@ class Cart:
         result.append("\n" + "="*41)    
         result.append("              CART OVERVIEW")
         result.append("="*41)
-        print
         for index, item in enumerate(self.cartitems, start=1):
             result.append(f"\n[{index}] Product Details")
             result.append(item.cartitem_info())

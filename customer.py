@@ -1,7 +1,8 @@
 from cart import Cart
+from textwrap import dedent
 
 class Customer:
-    customerid = 1000
+    customer_id_counter = 1000
     customers = 0
 
     @staticmethod
@@ -9,12 +10,12 @@ class Customer:
         return '@' in email
     
     def __init__(self, name, email):
-        self.email = email
-        self.name: str = name
-        self.__customer_id = Customer.customerid
+        self.__email = email
+        self.__name: str = name
+        self.__customer_id = Customer.customer_id_counter
         self.cart = Cart()
+        Customer.customer_id_counter+=1
         Customer.customers+=1
-        Customer.customerid+=1
 
     @property
     def email(self):
@@ -27,10 +28,6 @@ class Customer:
         self.__email = new_email
         
     @property
-    def customer_id(self):
-        return self.__customer_id
-    
-    @property
     def name(self):
         return self.__name
     
@@ -39,6 +36,14 @@ class Customer:
         if not new_name.strip() or len(new_name)>23:
             raise ValueError("Customer name cant be empty and must be under 23 word limit")
         self.__name = new_name
+    
+    @property
+    def customer_id(self):
+        return self.__customer_id
+    
+    @classmethod
+    def get_total_customers(cls):
+        return cls.customers
     
     def add_to_cart(self, product, quantity):
         self.cart.add_item(product, quantity)   
@@ -62,7 +67,7 @@ class Customer:
         self.cart.clear_cart()
         
     def customer_info(self):
-        return f"""
+        return dedent(f"""
     ========================================
                 CUSTOMER DETAILS            
     ========================================
@@ -73,4 +78,4 @@ class Customer:
     Total items in cart: {self.cart.get_total_cartitems()}
 
     ----------------------------------------
-        """
+        """)

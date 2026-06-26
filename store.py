@@ -36,4 +36,11 @@ class Store:
             c.clear_cart()
             return o
         
+    def get_total_orders(self):
+        return len(self.orders)
+        
+    def get_total_customers(self):
+        return len(self.customers)
     
+    def get_total_products(self):
+        return len(self.products)

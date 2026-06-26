@@ -1,6 +1,8 @@
+from product import Product
+
 class CartItem:
     def __init__(self, product, quantity):
-        self.product = product
+        self.product: Product = product
         self.__quantity = quantity
         
     @property

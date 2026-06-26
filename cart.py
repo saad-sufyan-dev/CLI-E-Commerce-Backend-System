@@ -1,10 +1,11 @@
 from cart_item import CartItem
+from product import Product
 
 class Cart:
     def __init__(self):
         self.cartitems: list[CartItem] = []
         
-    def add_item(self, product, quantity):
+    def add_item(self, product: Product, quantity):
         for i in self.cartitems:
             if i.product.product_id == product.product_id:
                 i.increase_quantity(quantity)

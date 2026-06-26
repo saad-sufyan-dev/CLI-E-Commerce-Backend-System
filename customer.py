@@ -13,7 +13,7 @@ class Customer:
         self.__email = email
         self.__name: str = name
         self.__customer_id = Customer.customer_id_counter
-        self.cart = Cart()
+        self.__cart = Cart()
         Customer.customer_id_counter+=1
         Customer.customers+=1
 
@@ -41,6 +41,10 @@ class Customer:
     def customer_id(self):
         return self.__customer_id
     
+    @property
+    def cart(self):
+        return self.__cart
+    
     @classmethod
     def get_total_customers(cls):
         return cls.customers
@@ -54,9 +58,6 @@ class Customer:
     def remove_from_cart(self, product_id):
         self.cart.remove_item(product_id)
 
-    def get_cart(self):
-        return self.cart
-    
     def view_cart(self):
         return self.cart.cart_info()
 
@@ -65,6 +66,9 @@ class Customer:
     
     def clear_cart(self):
         self.cart.clear_cart()
+        
+    def order_history(self):
+        pass
         
     def customer_info(self):
         return dedent(f"""

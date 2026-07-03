@@ -1,134 +1,138 @@
-from store import Store
-from product import Product
-from customer import Customer
+from models.cart import Cart
+from models.customer import Customer
+from models.order import Order
+from models.product import Product
+from models.store import Store
 
-def print_section(title):
-    """Helper function to print section headers"""
-    print(f"\n{'='*60}")
-    print(f"  {title}")
-    print(f"{'='*60}\n")
+def main():
+    # Phase 1: Product Testing
+    laptop = Product("Laptop", 120000, 5)
+    headphones = Product("Headphones", 5000, 15)
+    mouse = Product("Mouse", 1500, 20)
 
-print_section("STEP 1: INSTANTIATE A STORE")
-store = Store()
-print("✓ Store instantiated successfully")
-print(f"  - Products in store: {store.get_total_products()}")
-print(f"  - Customers in store: {store.get_total_customers()}")
-print(f"  - Total orders: {store.get_total_orders()}")
+    assert laptop.name == "Laptop"
+    assert laptop.price == 120000
+    assert laptop.stock == 5
+    assert isinstance(laptop.product_id, int)
+    assert "Laptop" in laptop.product_info()
+    assert laptop.is_available(3) is True
+    assert laptop.is_available(6) is False
+    laptop.reduce_stock(1)
+    assert laptop.stock == 4
+    laptop.restock(1)
+    assert laptop.stock == 5
 
-print_section("STEP 2: CREATE 3 PRODUCTS AND ADD TO STORE")
+    assert headphones.name == "Headphones"
+    assert headphones.price == 5000
+    assert headphones.stock == 15
+    assert mouse.name == "Mouse"
+    assert mouse.price == 1500
+    assert mouse.stock == 20
 
-# Create Product 1: Laptop
-laptop = Product("Laptop", 120000, 5)
-print(f"✓ Created Product 1: {laptop.product_info()}")
-store.add_product(laptop)
+    print("Product class methods verified.")
 
-# Create Product 2: Headphones
-headphones = Product("Headphones", 5000, 15)
-print(f"✓ Created Product 2: {headphones.product_info()}")
-store.add_product(headphones)
+    # Phase 2: Cart & CartItem Testing
+    customer = Customer("Ali Khan", "ali@example.com")
+    assert customer.name == "Ali Khan"
+    assert customer.email == "ali@example.com"
+    assert isinstance(customer.customer_id, int)
+    assert customer.cart.get_total_cartitems() == 0
+    assert customer.cart_total() == "Total Payable Amount: 0 Rs"
 
-# Create Product 3: Mouse
-mouse = Product("Mouse", 2500, 25)
-print(f"✓ Created Product 3: {mouse.product_info()}")
-store.add_product(mouse)
+    customer.add_to_cart(laptop, 2)
+    customer.add_to_cart(headphones, 1)
+    assert customer.cart.get_total_cartitems() == 2
+    customer.add_to_cart(laptop, 1)
+    assert customer.cart.cartitems[0].quantity == 3
+    assert customer.cart.get_total_cartitems() == 2
+    assert customer.cart.get_total() == (3 * laptop.price) + headphones.price
+    assert customer.cart_total() == f"Total Payable Amount: {customer.cart.get_total():,} Rs"
 
-print(f"\n✓ All products added to store")
-print(f"  - Total products in store: {store.get_total_products()}")
+    cart_item = customer.cart.cartitems[0]
+    assert cart_item.quantity == 3
+    assert cart_item.get_total_price() == 3 * laptop.price
+    assert "Laptop" in cart_item.cartitem_info()
+    cart_item.increase_quantity(1)
+    assert cart_item.quantity == 4
+    cart_item.decrease_quantity(1)
+    assert cart_item.quantity == 3
+    cart_item.quantity = 2
+    assert cart_item.quantity == 2
 
-print_section("STEP 3: REGISTER A NEW CUSTOMER IN STORE")
-customer = Customer("Ahmed Hassan", "ahmed@example.com")
-print(f"✓ Customer registered: {customer.customer_info()}")
-store.register_customer(customer)
-print(f"  - Total customers in store: {store.get_total_customers()}")
+    temp_cart = Cart()
+    temp_cart.add_item(laptop, 1)
+    temp_cart.add_item(headphones, 1)
+    temp_cart.remove_item(headphones.product_id)
+    assert temp_cart.get_total_cartitems() == 1
+    temp_cart.add_item(headphones, 1)
+    assert temp_cart.get_total_cartitems() == 2
+    temp_cart.decrease_item(laptop.product_id, 1)
+    assert temp_cart.get_total_cartitems() == 1
+    assert temp_cart.get_total() == headphones.price
+    temp_cart.clear_cart()
+    assert temp_cart.get_total_cartitems() == 0
+    assert "empty" in temp_cart.cart_info().lower()
 
-print_section("STEP 4: SIMULATE ADDING ITEMS TO CART")
+    assert customer.view_cart().count("Laptop") >= 1
+    customer.remove_from_cart(headphones.product_id)
+    assert customer.cart.get_total_cartitems() == 1
+    customer.add_to_cart(headphones, 1)
+    customer.decrease_from_cart(laptop.product_id, 1)
+    assert customer.cart.cartitems[0].quantity == 1
+    assert customer.clear_cart() is None
+    assert customer.cart.get_total_cartitems() == 0
+    assert customer.order_history() is None
+    assert "Ali Khan" in customer.customer_info()
 
-# Test 4a: Add items in stock
-print("  4a. Adding in-stock items to cart:")
-customer.add_to_cart(laptop, 1)
-print(f"      ✓ Added 1x Laptop to cart")
+    print("Cart and CartItem class methods verified.")
 
-customer.add_to_cart(headphones, 2)
-print(f"      ✓ Added 2x Headphones to cart")
+    # Phase 3: Store & Customer Registry Testing
+    store = Store()
+    store.add_product(laptop)
+    store.add_product(headphones)
+    store.add_product(mouse)
+    store.register_customer(customer)
+    assert store.products[laptop.product_id] is laptop
+    assert store.products[headphones.product_id] is headphones
+    assert store.products[mouse.product_id] is mouse
+    assert store.customers[customer.customer_id] is customer
+    assert store.get_total_products() == 3
+    assert store.get_total_customers() == 1
+    assert store.get_product(laptop.product_id) is laptop
+    assert store.get_product(headphones.product_id) is headphones
 
-customer.add_to_cart(mouse, 3)
-print(f"      ✓ Added 3x Mouse to cart")
+    print("Store registration methods verified.")
 
-print(f"\n      Current cart status:")
-print(customer.view_cart())
+    customer.add_to_cart(laptop, 2)
+    customer.add_to_cart(headphones, 1)
 
-# Test 4b: Update quantity of existing item
-print(f"\n  4b. Updating quantity of existing item:")
-print(f"      Before: 3x Mouse in cart")
-customer.add_to_cart(mouse, 2)  # Add 2 more to the existing 3
-print(f"      ✓ Added 2 more Mouse to existing 3")
-print(f"      After: 5x Mouse in cart")
+    # Phase 4: Transaction & Order Lifecycle Testing
+    order = store.process_checkout(customer.customer_id)
+    assert isinstance(order, Order)
+    assert store.products[laptop.product_id].stock == 3
+    assert store.products[headphones.product_id].stock == 14
+    assert customer.cart.get_total_cartitems() == 0
+    assert store.get_total_orders() == 1
+    assert order.customer is customer
+    assert order.items[0].product.name == "Laptop"
+    assert order.total_amount == 2 * laptop.price + headphones.price
+    assert order.order_status == "Pending"
+    assert order.get_items_count() == 2
+    assert order.order_id >= 1000
+    assert len(store.orders) == 1
 
-print(f"\n      Updated cart status:")
-print(customer.view_cart())
+    print("Transaction and Order methods verified.")
+    print(order.generate_invoice())
 
-print_section("STEP 5: EXECUTE SUCCESSFUL CHECKOUT")
-print("Processing checkout...\n")
+    # Phase 5: Defensive Edge-Case Validation
+    try:
+        store.process_checkout(customer.customer_id)
+        raise AssertionError("Checkout should have failed for an empty cart")
+    except ValueError as error:
+        assert "empty cart" in str(error).lower()
 
-# Store inventory before checkout
-laptop_stock_before = store.products[laptop.product_id].stock
-headphones_stock_before = store.products[headphones.product_id].stock
-mouse_stock_before = store.products[mouse.product_id].stock
+    print("Edge cases and validation safety verified.")
 
-# Execute checkout
-order = store.process_checkout(customer.customer_id)
-print("✓ Checkout successful!")
-print(f"  - Order ID: {order.order_id}")
-print(f"  - Order Status: {order.order_status}")
-print(f"  - Total Amount: {order.total_amount:,} Rs")
 
-# Print invoice
-print("\n" + order.generate_invoice())
-
-print_section("STEP 6: VERIFY INVENTORY DECREASED ACCURATELY")
-laptop_stock_after = store.products[laptop.product_id].stock
-headphones_stock_after = store.products[headphones.product_id].stock
-mouse_stock_after = store.products[mouse.product_id].stock
-
-print(f"Inventory verification:")
-print(f"  Laptop:     {laptop_stock_before} → {laptop_stock_after} (decreased by {laptop_stock_before - laptop_stock_after}) ✓")
-print(f"  Headphones: {headphones_stock_before} → {headphones_stock_after} (decreased by {headphones_stock_before - headphones_stock_after}) ✓")
-print(f"  Mouse:      {mouse_stock_before} → {mouse_stock_after} (decreased by {mouse_stock_before - mouse_stock_after}) ✓")
-
-print_section("STEP 7: EDGE CASE TESTS")
-
-# Edge Case 1: Try to checkout an empty cart
-print("  Edge Case 1: Attempting to checkout with an empty cart")
-try:
-    store.process_checkout(customer.customer_id)
-    print("      ✗ FAILED: Exception should have been raised")
-except ValueError as e:
-    print(f"      ✓ Exception caught as expected: '{e}'")
-
-# Edge Case 2: Try to add more items than in stock
-print("\n  Edge Case 2: Attempting to add more items than available in stock")
-customer2 = Customer("John Doe", "john@example.com")
-store.register_customer(customer2)
-
-try:
-    # Try to add 30 mice when only 20 are left in stock (25 - 5)
-    customer2.add_to_cart(mouse, 30)
-    # This will add to cart, but checkout should fail
-    order2 = store.process_checkout(customer2.customer_id)
-    print("      ✗ FAILED: Exception should have been raised during checkout")
-except ValueError as e:
-    print(f"      ✓ Exception caught during checkout: '{e}'")
-
-# Edge Case 3: Try to checkout with invalid customer ID
-print("\n  Edge Case 3: Attempting to checkout with invalid customer ID")
-try:
-    store.process_checkout(9999)
-    print("      ✗ FAILED: Exception should have been raised")
-except ValueError as e:
-    print(f"      ✓ Exception caught as expected: '{e}'")
-
-print_section("FINAL SUMMARY")
-print(f"✓ All tests completed successfully!")
-print(f"  - Total customers created: {store.get_total_customers()}")
-print(f"  - Total products created: {store.get_total_products()}")
-print(f"  - Total orders processed: {store.get_total_orders()}")
+if __name__ == "__main__":
+    main()

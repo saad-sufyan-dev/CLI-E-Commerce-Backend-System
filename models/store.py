@@ -44,3 +44,6 @@ class Store:
     
     def get_total_products(self):
         return len(self.products)
+    
+    def product_catalog(self):
+        pass

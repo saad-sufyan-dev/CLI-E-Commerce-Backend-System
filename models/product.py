@@ -2,14 +2,12 @@ from textwrap import dedent
 
 class Product:
     product_id_counter = 1000
-    products = 0
     def __init__(self, name, price, stock):
         self.__name = name
         self.__price = price
         self.__stock = stock
         self.__product_id = Product.product_id_counter
         Product.product_id_counter+=1
-        Product.products+=1
 
     @property
     def name(self):
@@ -44,10 +42,6 @@ class Product:
     @property
     def product_id(self):
         return self.__product_id
-    
-    @classmethod
-    def get_total_products(cls):
-        return cls.products
     
     def is_available(self, quantity):
         if quantity<=0:

@@ -5,7 +5,6 @@ from textwrap import dedent
 
 class Order:
     order_id_counter = 1000
-    orders = 0
     allowed_statuses = ["Pending", "Processing", "Shipped", "Delivered", "Canceled"]
     
     def __init__(self, customer: Customer):
@@ -15,7 +14,6 @@ class Order:
         self.__order_id = Order.order_id_counter
         self.__order_status = "Pending"
         Order.order_id_counter+=1
-        Order.orders+=1
             
     @property
     def customer(self):
@@ -43,10 +41,6 @@ class Order:
             raise ValueError(f"Order Status should match with:\n{Order.allowed_statuses}")
         self.__order_status = new_status
         
-    @classmethod
-    def get_total_orders(cls):
-        return cls.orders
-    
     def get_items_count(self):
         return len(self.items)
 

@@ -3,7 +3,6 @@ from textwrap import dedent
 
 class Customer:
     customer_id_counter = 1000
-    customers = 0
 
     @staticmethod
     def verify_email(email):
@@ -15,7 +14,6 @@ class Customer:
         self.__customer_id = Customer.customer_id_counter
         self.__cart = Cart()
         Customer.customer_id_counter+=1
-        Customer.customers+=1
 
     @property
     def email(self):
@@ -44,10 +42,6 @@ class Customer:
     @property
     def cart(self):
         return self.__cart
-    
-    @classmethod
-    def get_total_customers(cls):
-        return cls.customers
     
     def add_to_cart(self, product, quantity):
         self.cart.add_item(product, quantity)   

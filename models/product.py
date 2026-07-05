@@ -62,10 +62,8 @@ class Product:
 
     def product_info(self):
         return dedent(f"""
-    ========================================
-                PRODUCT DETAILS
-    ========================================
-
+    ----------------------------------------
+    
     Name: {self.name} (ID: {self.product_id})
     Price: {self.price:,} Rs
     Stock: {self.stock} units available

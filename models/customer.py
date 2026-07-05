@@ -1,4 +1,4 @@
-from cart import Cart
+from models.cart import Cart
 from textwrap import dedent
 
 class Customer:

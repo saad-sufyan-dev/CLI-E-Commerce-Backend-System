@@ -1,5 +1,5 @@
-from cart_item import CartItem
-from customer import Customer
+from models.cart_item import CartItem
+from models.customer import Customer
 from copy import deepcopy
 from textwrap import dedent
 

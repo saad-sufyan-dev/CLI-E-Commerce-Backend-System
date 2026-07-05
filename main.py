@@ -102,6 +102,7 @@ def main():
     assert store.get_product(headphones.product_id) is headphones
 
     print("Store registration methods verified.")
+    print(store.product_catalog())
 
     customer.add_to_cart(laptop, 2)
     customer.add_to_cart(headphones, 1)

@@ -1,6 +1,6 @@
-from product import Product
-from customer import Customer
-from order import Order
+from models.product import Product
+from models.customer import Customer
+from models.order import Order
 
 class Store:
     def __init__(self):
@@ -46,4 +46,14 @@ class Store:
         return len(self.products)
     
     def product_catalog(self):
-        pass
+        if len(self.products) == 0:
+            return "There are currently no products in the store"
+        result = []
+        result.append("\n" + "="*41)
+        result.append("              PRODUCT CATALOG")
+        result.append("="*41 + "\n")
+        for index, product in enumerate(self.products.values(), start=1):
+            result.append(f"[{index}] Product Details")
+            result.append(product.product_info())
+        return "\n".join(result)
+        

@@ -1,5 +1,5 @@
-from cart_item import CartItem
-from product import Product
+from models.cart_item import CartItem
+from models.product import Product
 
 class Cart:
     def __init__(self):

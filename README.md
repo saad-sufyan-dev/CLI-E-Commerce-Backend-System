@@ -72,6 +72,9 @@ Rather than relying on frameworks, every feature is implemented from scratch wit
 ```text
 cli-ecommerce-backend/
 │
+├──assets/
+|   └──banner.png
+|   
 ├── models/
 │   ├── product.py
 │   ├── cart.py

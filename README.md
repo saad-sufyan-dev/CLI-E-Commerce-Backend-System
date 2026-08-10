@@ -1,14 +1,9 @@
 # 🛒 CLI E-Commerce Backend (Python)
+<div align="center">
 
-<p align="center">
-  <img src="assets/banner.png" alt="CLI E-Commerce Backend Banner">
-</p>
+<img src="assets/banner.png" alt="Banner Image">
 
-<p align="center">
-  A Python-based command-line e-commerce backend built to master Object-Oriented Programming and software engineering fundamentals.
-</p>
-
-<p align="center">
+>  A Python-based command-line e-commerce backend built to master Object-Oriented Programming and software engineering fundamentals.
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
 ![Status](https://img.shields.io/badge/Status-In_Progress-yellow)
@@ -16,7 +11,7 @@
 ![OOP](https://img.shields.io/badge/OOP-Project-orange)
 ![CLI](https://img.shields.io/badge/Interface-CLI-black)
 
-</p>
+</div>
 
 ---
 

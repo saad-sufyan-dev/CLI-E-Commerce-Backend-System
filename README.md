@@ -417,7 +417,17 @@ Planned improvements include:
 
 Suggestions, feedback, and improvement ideas are always welcome.
 
-If you notice a bug, have a design suggestion, or want to discuss a better implementation, feel free to open an issue or start a discussion.
+If you'd like to improve this project:
+
+1. 🍴 Fork the repository.
+2. 🌿 Create a new branch.
+3. 💻 Make your changes.
+4. ✅ Commit your work.
+5. 🚀 Submit a Pull Request.
+
+Whether it's fixing documentation, improving code quality, or suggesting new techniques, every contribution is appreciated.
+
+
 
 ---
 
@@ -435,4 +445,16 @@ Python developer passionate about software engineering, backend development, and
 
 I'm currently learning by building real-world projects from scratch and documenting the journey here on GitHub.
 
-If you found this project helpful or interesting, consider giving it a ⭐!
+---
+
+<div align="center">
+
+## ⭐ Thanks for Visiting!
+
+Thanks for taking the time to explore this project.
+
+If you found it useful, consider **starring the repository**. Your support helps motivate me to keep learning, building, and sharing Python projects.
+
+**Happy Coding!** </>
+
+</div>
